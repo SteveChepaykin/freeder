@@ -4,7 +4,7 @@ import 'package:starange_reader/models/saved_text_model.dart';
 import 'package:starange_reader/screens/reader_screen.dart';
 
 class InputCard extends StatelessWidget {
-  InputCard({ Key? key }) : super(key: key);
+  InputCard({Key? key}) : super(key: key);
 
   final TextEditingController editcont = TextEditingController();
 
@@ -18,12 +18,16 @@ class InputCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
               decoration: const InputDecoration(
-                hintText: 'ваш текст...',
-              ),
+                  hintText: 'ваш текст...',
+                  hintStyle: TextStyle(color: Colors.white38),
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                    color: Color.fromARGB(255, 17, 35, 49),
+                  ))),
               // enabled: false,
               controller: editcont,
               maxLines: 20,
@@ -35,12 +39,14 @@ class InputCard extends StatelessWidget {
           ),
           TextButton.icon(
             onPressed: () async {
-              int id = await addText(editcont.text);
               if (editcont.text.isNotEmpty) {
+                int id = await addText(editcont.text);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ReaderScreen(textid: id,),
+                    builder: (context) => ReaderScreen(
+                      textid: id,
+                    ),
                   ),
                 );
               }
@@ -61,7 +67,7 @@ class InputCard extends StatelessWidget {
       ),
     );
   }
-  
+
   Future<int> addText(String wholetext) async {
     final ttext = SavedText(
       title: '',

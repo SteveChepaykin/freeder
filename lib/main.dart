@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:starange_reader/controllers/state_controller.dart';
 import 'package:starange_reader/screens/reader_screen.dart';
 import 'package:starange_reader/screens/texts_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var stcont = StateController();
+  Get.put<StateController>(stcont);
   runApp(const MyApp());
 }
 

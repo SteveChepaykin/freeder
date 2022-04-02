@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:intl/intl.dart';
 import 'package:starange_reader/models/saved_text_model.dart';
-import 'package:starange_reader/screens/reader_screen.dart';
+import 'package:starange_reader/screens/edit_screen.dart';
 
 class SavedTextTile extends StatefulWidget {
   final SavedText st;
@@ -55,52 +54,55 @@ class _SavedTextTileState extends State<SavedTextTile> {
     //     ),
     //   ),
     // );
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: ((context) => ReaderScreen(textid: widget.st.id!,))));
-      },
-      child: Card(
-        color: const Color.fromARGB(255, 28, 57, 78),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                DateFormat.yMMMd().format(widget.st.timecreated),
-                style: TextStyle(
-                  color: Colors.white38,
-                ),
+    return Card(
+      color: const Color.fromARGB(255, 28, 57, 78),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              DateFormat.yMMMd().format(widget.st.timecreated),
+              style: const TextStyle(
+                color: Colors.white38,
               ),
-              const SizedBox(
-                height: 5,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            const Text(
+              'SOMETHING',
+              style: TextStyle(color: Colors.white, fontSize: 17),
+            ),
+            Expanded(
+              child: Text(
+                widget.st.wholetext,
+                style: const TextStyle(
+                    // overflow: TextOverflow.ellipsis,
+                    color: Colors.white70,
+                    fontSize: 15),
+                // overflow: TextOverflow.ellipsis,
               ),
-              Text(
-                'SOMETHING',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              Expanded(
-                child: Text(
-                  widget.st.wholetext,
-                  style: const TextStyle(
-                      // overflow: TextOverflow.ellipsis,
-                      color: Colors.white70,
-                      fontSize: 17),
-                  // overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit_outlined, color: Colors.white,),
-                    label: const Text('edit', style: TextStyle(color: Colors.white),),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditScreen(st: widget.st)));
+                  },
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    color: Colors.white,
                   ),
-                ],
-              ),
-            ],
-          ),
+                  label: const Text(
+                    'edit',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

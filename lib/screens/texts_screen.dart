@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:starange_reader/TEXT.dart';
 import 'package:starange_reader/database/texts_database.dart';
 import 'package:starange_reader/models/saved_text_model.dart';
 import 'package:starange_reader/screens/reader_screen.dart';
+import 'package:starange_reader/screens/settings_screen.dart';
 import 'package:starange_reader/widgets/input_card.dart';
 import 'package:starange_reader/widgets/saved_text_tile.dart';
 
@@ -50,7 +50,7 @@ class _TextsScreenState extends State<TextsScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // textpauser();
+              Navigator.push(context, MaterialPageRoute(builder: (ctx) => const SettingsScreen()));
             },
             icon: const Icon(Icons.settings),
           )
@@ -66,17 +66,37 @@ class _TextsScreenState extends State<TextsScreen> {
                 height: 30,
               ),
               GridView(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 controller: scrollcont,
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: MediaQuery.of(context).size.width * 0.5,
-                  childAspectRatio: 5 / 8,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
+                  childAspectRatio: 6 / 10,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
                 ),
                 children: [
-                  ...savedtexts.map((st) => SavedTextTile(st: st)).toList()
+                  ...savedtexts
+                      .map(
+                        (st) => GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReaderScreen(
+                                  textid: st.id!,
+                                ),
+                              ),
+                            );
+                          },
+                          onLongPress: () {
+                            TextsDatabase.instance.delete(st.id!);
+                            setState(() {});
+                          },
+                          child: SavedTextTile(st: st),
+                        ),
+                      )
+                      .toList()
                   // tile(),
                 ],
               ),

@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:starange_reader/controllers/state_controller.dart';
 import 'package:starange_reader/database/texts_database.dart';
 import 'package:starange_reader/models/saved_text_model.dart';
+import 'package:starange_reader/screens/settings_screen.dart';
 import 'package:starange_reader/widgets/bottom_panel.dart';
 
 class ReaderScreen extends StatefulWidget {
@@ -19,25 +22,23 @@ class ReaderScreen extends StatefulWidget {
 }
 
 class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderStateMixin {
-  late AnimationController controller;
+  late AnimationController animcontroller;
   late PanelController pcontroller;
   List<String> textlist = [
-    'loading...',
+    ' ',
   ];
   String lastText = '';
   int counter = 0;
   bool ispaused = true;
   late Duration dur;
-  // final double fabheight = MediaQuery.of(context).size.height * 0.15;
   static const double fabhaightmin = 110;
   double fabheight = fabhaightmin;
-
   SavedText? thissavedtext;
   bool isLoading = false;
+  var controller = Get.find<StateController>();
 
   @override
   void initState() {
-    // textlist = widget.currentText.split(' ');
     refreshText().whenComplete(() {
       setState(() {
         counter = thissavedtext!.lastindex;
@@ -45,15 +46,12 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
         lastText = textlist.sublist(0, counter).join(' ');
       });
     });
-    // counter = thissavedtext!.lastindex;
-    // textlist = thissavedtext!.wholetext.split(' ');
-    // lastText = textlist.sublist(0, counter).join(' ');
-    dur = const Duration(milliseconds: 800);
-    controller = AnimationController(
+    dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['short']!);
+    animcontroller = AnimationController(
       vsync: this,
       duration: dur,
     );
-    controller.view.addStatusListener(changeword);
+    animcontroller.view.addStatusListener(changeword);
     pcontroller = PanelController();
     super.initState();
   }
@@ -69,33 +67,30 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
   }
 
   void changeword(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      controller.reset();
+    if (status == AnimationStatus.completed && counter + 1 != textlist.length) {
+      animcontroller.reset();
       lastText += ' ${textlist[counter]}';
       counter++;
       var a = textlist[counter].length;
       if (a > 7) {
-        dur = const Duration(milliseconds: 1300);
+        dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['medium']!);
       }
-      if (a > 13) {
-        dur = const Duration(milliseconds: 1800);
-      }
-      if (a > 20) {
-        dur = const Duration(milliseconds: 2300);
+      if (a > 15) {
+        dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['long']!);
       } else {
-        dur = const Duration(seconds: 1);
+        dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['short']!);
       }
-      controller.duration = dur;
-      controller.forward();
+      animcontroller.duration = dur;
+      animcontroller.forward();
       setState(() {});
     }
   }
 
   void textpauser() {
     if (!ispaused) {
-      controller.stop();
+      animcontroller.stop();
     } else {
-      controller.forward();
+      animcontroller.forward();
       pcontroller.close();
     }
     ispaused = !ispaused;
@@ -106,12 +101,11 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final panelMaxOpenSize = MediaQuery.of(context).size.height * 0.6;
     final panelMinOpenSize = MediaQuery.of(context).size.height * 0.08;
-    // final args = ModalRoute.of(context)!.settings.arguments as Map<String, int>;
-    // textlist = args['text']!.split(' ');
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 17, 35, 49),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 28, 57, 78),
+        title: Text(controller.speed.toString()),
         leading: IconButton(
           onPressed: () async {
             await updateText(counter);
@@ -122,7 +116,16 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
         actions: [
           IconButton(
             onPressed: () {
-              textpauser();
+              animcontroller.stop();
+              ispaused = true;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              ).whenComplete(() {
+                setState(() {});
+              });
             },
             icon: const Icon(Icons.settings),
           )
@@ -137,15 +140,13 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(15),
             ),
-            // minHeight: MediaQuery.of(context).size.height * 0.08,
-            // maxHeight: MediaQuery.of(context).size.height * 0.6,
             minHeight: panelMinOpenSize,
             maxHeight: panelMaxOpenSize,
             onPanelOpened: () {
-              if (!ispaused) controller.stop();
+              if (!ispaused) animcontroller.stop();
             },
             onPanelClosed: () {
-              if (!ispaused) controller.forward();
+              if (!ispaused) animcontroller.forward();
             },
             parallaxEnabled: true,
             parallaxOffset: 0.2,
@@ -161,21 +162,30 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
             ),
             body: GestureDetector(
               onTapDown: (_) {
-                if (!ispaused) controller.stop();
+                if (!ispaused) animcontroller.stop();
               },
               onTapUp: (_) {
-                if (!ispaused) controller.forward();
+                if (!ispaused) animcontroller.forward();
               },
+              // onVerticalDragUpdate: (details) {
+              //   setState(() {
+              //     if(details.delta > Offset.zero) {
+              //     controller.changeSpeed(1);
+              //   } else {
+              //     controller.changeSpeed(-1);
+              //   }
+              //   });
+              // },
               behavior: HitTestBehavior.opaque,
               child: Center(
                 child: SizedBox(
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 200),
                     child: Text(
                       textlist[counter],
                       key: ValueKey(textlist[counter] + Random(200).toString()),
-                      style: const TextStyle(
-                        fontSize: 40,
+                      style: TextStyle(
+                        fontSize: controller.textSize.toDouble(),
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -196,7 +206,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
 
   @override
   void dispose() {
-    controller.dispose();
+    animcontroller.dispose();
     super.dispose();
   }
 
