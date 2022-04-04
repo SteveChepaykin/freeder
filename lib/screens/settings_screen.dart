@@ -16,8 +16,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     var a = Get.find<StateController>();
-    cont.text = a.textSize.toString();
-    spd = a.speed;
+    cont.text = a.getSize().toString();
+    spd = a.getSpeed()!;
     super.initState();
   }
 
@@ -77,8 +77,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               TextButton.icon(
                 onPressed: () {
                   var a = Get.find<StateController>();
-                  a.changeFontSize(int.parse(cont.text));
-                  a.changeSpeed(spd);
+                  // a.changeFontSize(int.parse(cont.text));
+                  a.setSize(int.parse(cont.text));
+                  // a.changeSpeed(spd);
+                  a.setSpeed(spd);
                   Navigator.pop(context);
                 },
                 icon: const Icon(Icons.save, color: Colors.white,),

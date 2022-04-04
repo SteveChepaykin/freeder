@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:starange_reader/controllers/state_controller.dart';
-import 'package:starange_reader/screens/reader_screen.dart';
 import 'package:starange_reader/screens/texts_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var stcont = StateController();
-  Get.put<StateController>(stcont);
+  // var stcont = StateController();
+  // Get.put<StateController>(stcont);
+  Get.putAsync<StateController>(() async {
+    var c = StateController();
+    await c.init();
+    return c;
+  },);
+  // await UserPrefs().setPrefs();
   runApp(const MyApp());
 }
 
@@ -22,10 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TextsScreen(),
-      // routes: {
-      //   // ReaderScreen.routeName: (context) => const ReaderScreen(),
-      // },
+      home: const TextsScreen(),
     );
   }
 }

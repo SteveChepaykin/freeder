@@ -1,8 +1,19 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StateController extends GetxController {
-  int textSize = 40;
-  int speed = 4;
+  late int textSize;
+  late int speed;
+  static const String speedkey = 'speedKey';
+  static const String sizekey = 'sizekey';
+
+  late final SharedPreferences prefs;
+
+  Future<void> init() async {
+    prefs = await SharedPreferences.getInstance();
+    textSize = getSize()!;
+    speed = getSpeed()!;
+  }
 
   final Map<int, Map<String, int>> speedsMap = {
     1: {
@@ -32,11 +43,26 @@ class StateController extends GetxController {
     },
   };
 
-  void changeSpeed(int value) {
-    if(1 <= (speed += value) && (speed += value) <= 5) speed += value;
+  // void changeSpeed(int value) {
+  //   if(1 <= (speed += value) && (speed += value) <= 5) speed += value;
+  // }
+
+  // void changeFontSize(int newsize) {
+  //   if(25<newsize && newsize<55) textSize = newsize;
+  // }
+
+   Future<void> setSpeed(int spd) {
+    return prefs.setInt(speedkey, spd);
   }
 
-  void changeFontSize(int newsize) {
-    if(25<newsize && newsize<55) textSize = newsize;
+  Future<void> setSize(int size) {
+    return prefs.setInt(sizekey, size);
+  }
+
+  int? getSize() {
+    return prefs.containsKey(sizekey) ? prefs.getInt(sizekey) : 40;
+  }
+  int? getSpeed() {
+    return prefs.containsKey(speedkey) ? prefs.getInt(speedkey) : 4;
   }
 }

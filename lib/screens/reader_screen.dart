@@ -46,7 +46,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
         lastText = textlist.sublist(0, counter).join(' ');
       });
     });
-    dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['short']!);
+    dur = Duration(milliseconds: controller.speedsMap[controller.getSpeed()]!['short']!);
     animcontroller = AnimationController(
       vsync: this,
       duration: dur,
@@ -57,13 +57,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
   }
 
   Future<void> refreshText() async {
-    // setState(() {
-    //   isLoading = true;
-    // });
     thissavedtext = await TextsDatabase.instance.readText(widget.textid) as SavedText;
-    // setState(() {
-    //   isLoading = false;
-    // });
   }
 
   void changeword(AnimationStatus status) {
@@ -73,12 +67,12 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
       counter++;
       var a = textlist[counter].length;
       if (a > 7) {
-        dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['medium']!);
+        dur = Duration(milliseconds: controller.speedsMap[controller.getSpeed()]!['medium']!);
       }
       if (a > 15) {
-        dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['long']!);
+        dur = Duration(milliseconds: controller.speedsMap[controller.getSpeed()]!['long']!);
       } else {
-        dur = Duration(milliseconds: controller.speedsMap[controller.speed]!['short']!);
+        dur = Duration(milliseconds: controller.speedsMap[controller.getSpeed()]!['short']!);
       }
       animcontroller.duration = dur;
       animcontroller.forward();
@@ -105,7 +99,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
       backgroundColor: const Color.fromARGB(255, 17, 35, 49),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 28, 57, 78),
-        title: Text(controller.speed.toString()),
+        title: Text(controller.getSpeed().toString()),
         leading: IconButton(
           onPressed: () async {
             await updateText(counter);
@@ -167,15 +161,6 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
               onTapUp: (_) {
                 if (!ispaused) animcontroller.forward();
               },
-              // onVerticalDragUpdate: (details) {
-              //   setState(() {
-              //     if(details.delta > Offset.zero) {
-              //     controller.changeSpeed(1);
-              //   } else {
-              //     controller.changeSpeed(-1);
-              //   }
-              //   });
-              // },
               behavior: HitTestBehavior.opaque,
               child: Center(
                 child: SizedBox(
@@ -185,7 +170,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
                       textlist[counter],
                       key: ValueKey(textlist[counter] + Random(200).toString()),
                       style: TextStyle(
-                        fontSize: controller.textSize.toDouble(),
+                        fontSize: controller.getSize()!.toDouble(),
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),

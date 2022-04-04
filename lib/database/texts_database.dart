@@ -22,9 +22,9 @@ class TextsDatabase {
   }
 
   Future<void> createDB(Database db, int version) async {
-    final idtype = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    final integertype = 'INTEGER NOT NULL';
-    final texttype = 'TEXT NOT NULL';
+    const idtype = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    const integertype = 'INTEGER NOT NULL';
+    const texttype = 'TEXT NOT NULL';
 
     await db.execute('''CREATE TABLE $tableTexts (
         ${SavedTextFields.id} $idtype,
@@ -72,8 +72,8 @@ class TextsDatabase {
 
   Future<List<SavedText>> readAllSavedTexts() async {
     final db = await instance.database;
-    final orderBy = '${SavedTextFields.timecreated} ASC';
-    final result = await db.query(tableTexts);
+    const orderBy = '${SavedTextFields.timecreated} DESC';
+    final result = await db.query(tableTexts, orderBy: orderBy);
     return result.map((e) => SavedText.fromJson(e)).toList();
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starange_reader/database/texts_database.dart';
+import 'package:starange_reader/database/user_prefs.dart';
 import 'package:starange_reader/models/saved_text_model.dart';
 import 'package:starange_reader/screens/reader_screen.dart';
 import 'package:starange_reader/screens/settings_screen.dart';
@@ -7,7 +8,7 @@ import 'package:starange_reader/widgets/input_card.dart';
 import 'package:starange_reader/widgets/saved_text_tile.dart';
 
 class TextsScreen extends StatefulWidget {
-  TextsScreen({Key? key}) : super(key: key);
+  const TextsScreen({Key? key}) : super(key: key);
 
   @override
   State<TextsScreen> createState() => _TextsScreenState();
@@ -22,7 +23,12 @@ class _TextsScreenState extends State<TextsScreen> {
   @override
   void initState() {
     refreshNotes().whenComplete(() => setState(() {}));
+    // s();
     super.initState();
+  }
+
+  void s() async {
+    await UserPrefs().setPrefs();
   }
 
   @override
@@ -87,7 +93,9 @@ class _TextsScreenState extends State<TextsScreen> {
                                   textid: st.id!,
                                 ),
                               ),
-                            );
+                            ).whenComplete(() {
+                              setState(() {});
+                            });
                           },
                           onLongPress: () {
                             TextsDatabase.instance.delete(st.id!);

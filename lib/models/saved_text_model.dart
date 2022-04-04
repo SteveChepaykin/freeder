@@ -1,14 +1,14 @@
-final String tableTexts = 'texts';
+const String tableTexts = 'texts';
 
 class SavedTextFields {
   static final List<String> values = [id, title, wholetext, lastindex, timecreated];
 
-  static final String id = '_id';
-  static final String title = 'title';
-  static final String wholetext = 'wholetext';
-  static final String lastindex = 'lastindex';
+  static const String id = '_id';
+  static const String title = 'title';
+  static const String wholetext = 'wholetext';
+  static const String lastindex = 'lastindex';
   // static final String lastopenedtime = 'lastopenedtime';
-  static final String timecreated = 'timecreated';
+  static const String timecreated = 'timecreated';
 }
 
 class SavedText {

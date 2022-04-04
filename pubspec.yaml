@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.17.0
   flutter_inset_box_shadow: ^1.0.7
   get: ^4.6.1
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
