@@ -12,10 +12,12 @@ class EditScreen extends StatefulWidget {
 
 class _EditScreenState extends State<EditScreen> {
   final TextEditingController textedit = TextEditingController();
+  // final TextEditingController headeredit = TextEditingController();
 
   @override
   void initState() {
     textedit.text = widget.st.wholetext;
+    // headeredit.text = widget.st.title;
     super.initState();
   }
 
@@ -44,10 +46,19 @@ class _EditScreenState extends State<EditScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: TextField(
-          controller: textedit,
-          maxLines: null,
-          style: const TextStyle(fontSize: 17, color: Colors.white),
+        child: Column(
+          children: [
+            // TextField(
+            //   controller: headeredit,
+            //   maxLines: 1,
+            //   style: const TextStyle(fontSize: 20, color: Colors.white),
+            // ),
+            TextField(
+              controller: textedit,
+              maxLines: null,
+              style: const TextStyle(fontSize: 17, color: Colors.white),
+            ),
+          ],
         ),
       ),
     );
@@ -56,6 +67,7 @@ class _EditScreenState extends State<EditScreen> {
   Future<void> updateText(String newlasttext) async {
     final updatedtext = widget.st.copy(
       wholetext: newlasttext,
+      // title: newheader,
     );
     await TextsDatabase.instance.update(updatedtext);
   }

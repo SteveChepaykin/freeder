@@ -5,7 +5,8 @@ import 'package:starange_reader/screens/edit_screen.dart';
 
 class SavedTextTile extends StatefulWidget {
   final SavedText st;
-  const SavedTextTile({Key? key, required this.st}) : super(key: key);
+  final Future<void> Function() funk;
+  const SavedTextTile({Key? key, required this.st, required this.funk}) : super(key: key);
 
   @override
   State<SavedTextTile> createState() => _SavedTextTileState();
@@ -70,10 +71,10 @@ class _SavedTextTileState extends State<SavedTextTile> {
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              'SOMETHING',
-              style: TextStyle(color: Colors.white, fontSize: 17),
-            ),
+            // Text(
+            //   widget.st.title,
+            //   style: TextStyle(color: Colors.white, fontSize: 17),
+            // ),
             Expanded(
               child: Text(
                 widget.st.wholetext,
@@ -89,7 +90,12 @@ class _SavedTextTileState extends State<SavedTextTile> {
               children: [
                 TextButton.icon(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => EditScreen(st: widget.st)));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditScreen(st: widget.st),
+                      ),
+                    ).whenComplete(widget.funk);
                   },
                   icon: const Icon(
                     Icons.edit_outlined,

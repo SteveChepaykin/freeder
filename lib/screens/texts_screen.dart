@@ -52,14 +52,21 @@ class _TextsScreenState extends State<TextsScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 17, 35, 49),
       appBar: AppBar(
+        // title: const Text('"читальня"'),
         backgroundColor: const Color.fromARGB(255, 28, 57, 78),
         actions: [
+          // IconButton(
+          //   onPressed: () async {
+          //     await refreshNotes();
+          //   },
+          //   icon: const Icon(Icons.replay),
+          // ),
           IconButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (ctx) => const SettingsScreen()));
             },
             icon: const Icon(Icons.settings),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -67,7 +74,9 @@ class _TextsScreenState extends State<TextsScreen> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
-              InputCard(),
+              InputCard(
+                func: refreshNotes,
+              ),
               const SizedBox(
                 height: 30,
               ),
@@ -93,15 +102,14 @@ class _TextsScreenState extends State<TextsScreen> {
                                   textid: st.id!,
                                 ),
                               ),
-                            ).whenComplete(() {
-                              setState(() {});
+                            ).whenComplete(() async {
+                              await refreshNotes();
                             });
                           },
-                          onLongPress: () {
-                            TextsDatabase.instance.delete(st.id!);
-                            setState(() {});
+                          onLongPressEnd: (details) async {
+                            showDialog(context: context, builder: (constext) => dialog(st));
                           },
-                          child: SavedTextTile(st: st),
+                          child: SavedTextTile(st: st, funk: refreshNotes,),
                         ),
                       )
                       .toList()
@@ -114,4 +122,33 @@ class _TextsScreenState extends State<TextsScreen> {
       ),
     );
   }
+
+  Widget dialog(SavedText st) => AlertDialog(
+        backgroundColor: const Color.fromARGB(255, 17, 35, 49),
+        title: const Text('УДАЛЕНИЕ', style: TextStyle(color: Colors.white),),
+        content: Text(
+          'уверены что хотите удалить текст: ${st.wholetext}',
+          maxLines: 5,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: Colors.white),
+        ),
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.close_rounded, color: Colors.white,),
+            label: const Text('назад', style: TextStyle(color: Colors.white),),
+          ),
+          TextButton.icon(
+            onPressed: () async {
+              TextsDatabase.instance.delete(st.id!);
+              await refreshNotes();
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.check_rounded, color: Colors.white,),
+            label: const Text('удалить', style: TextStyle(color: Colors.white),),
+          ),
+        ],
+      );
 }

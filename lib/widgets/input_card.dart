@@ -4,7 +4,8 @@ import 'package:starange_reader/models/saved_text_model.dart';
 import 'package:starange_reader/screens/reader_screen.dart';
 
 class InputCard extends StatelessWidget {
-  InputCard({Key? key}) : super(key: key);
+  final  Future<void> Function() func;
+  InputCard({Key? key, required this.func}) : super(key: key);
 
   final TextEditingController editcont = TextEditingController();
 
@@ -48,7 +49,7 @@ class InputCard extends StatelessWidget {
                       textid: id,
                     ),
                   ),
-                );
+                ).whenComplete(func);
               }
               editcont.clear();
             },
