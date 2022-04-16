@@ -102,7 +102,7 @@ class _SavedTextTileState extends State<SavedTextTile> {
                     color: Colors.white,
                   ),
                   label: const Text(
-                    'edit',
+                    'изменить',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

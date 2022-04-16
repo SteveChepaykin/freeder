@@ -33,6 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
+              const Text('размер текста:'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -53,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   const Text(
-                    " > 55 ",
+                    " > 75 ",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ],
@@ -61,14 +62,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(
                 height: 30,
               ),
+              const Text('скорость чтения (слов/мин):'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  butn(1),
-                  butn(2),
-                  butn(3),
-                  butn(4),
-                  butn(5),
+                  butn(100),
+                  butn(200),
+                  butn(300),
+                  butn(350),
+                  butn(450),
                 ],
               ),
               const SizedBox(
@@ -76,15 +78,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               TextButton.icon(
                 onPressed: () {
-                  var a = Get.find<StateController>();
-                  // a.changeFontSize(int.parse(cont.text));
-                  a.setSize(int.parse(cont.text));
-                  // a.changeSpeed(spd);
-                  a.setSpeed(spd);
-                  Navigator.pop(context);
+                  if (int.parse(cont.text) > 25 && int.parse(cont.text) < 75) {
+                    var a = Get.find<StateController>();
+                    // a.changeFontSize(int.parse(cont.text));
+                    a.setSize(int.parse(cont.text));
+                    // a.changeSpeed(spd);
+                    a.setSpeed(spd);
+                    Navigator.pop(context);
+                  } else {
+                    Get.showSnackbar(
+                      const GetSnackBar(
+                        message: 'неверный параметр размера.',
+                        duration: Duration(milliseconds: 800),
+                      ),
+                    );
+                  }
                 },
-                icon: const Icon(Icons.save, color: Colors.white,),
-                label: const Text('сохранить', style: TextStyle(color: Colors.white),),
+                icon: const Icon(
+                  Icons.save,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  'сохранить',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
