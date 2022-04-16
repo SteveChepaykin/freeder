@@ -17,9 +17,14 @@ class StateController extends GetxController {
 
   final Map<int, Map<String, int>> speedsMap = {
     100: {
-      'short': 500,
+      'short': 550,
       'medium': 600,
-      'long': 800,
+      'long': 700,
+    },
+    150: {
+      'short': 350,
+      'medium': 400,
+      'long': 500,
     },
     200: {
       'short': 250,
@@ -27,19 +32,14 @@ class StateController extends GetxController {
       'long': 400,
     },
     300: {
-      'short': 180,
+      'short': 150,
       'medium': 200,
       'long': 300,
     },
-    350: {
-      'short': 150,
-      'medium': 171,
-      'long': 271,
-    },
-    450: {
-      'short': 113,
-      'medium': 133,
-      'long': 200,
+    400: {
+      'short': 120,
+      'medium': 150,
+      'long': 250,
     },
   };
 
@@ -63,6 +63,6 @@ class StateController extends GetxController {
     return prefs.containsKey(sizekey) ? prefs.getInt(sizekey) : 40;
   }
   int? getSpeed() {
-    return prefs.containsKey(speedkey) ? prefs.getInt(speedkey) : 2;
+    return prefs.containsKey(speedkey) ? prefs.getInt(speedkey) : 200;
   }
 }

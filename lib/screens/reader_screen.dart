@@ -165,7 +165,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
               child: Center(
                 child: SizedBox(
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 100),
                     child: Text(
                       textlist[counter],
                       key: ValueKey(textlist[counter] + Random(200).toString()),
