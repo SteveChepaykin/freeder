@@ -33,7 +33,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              const Text('размер текста:'),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Text('размер текста:',  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -62,15 +68,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(
                 height: 30,
               ),
-              const Text('скорость чтения (слов/мин):'),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Text(
+                  'скорость чтения (слов/мин):',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   butn(100),
+                  butn(150),
                   butn(200),
                   butn(300),
-                  butn(350),
-                  butn(450),
+                  butn(400),
                 ],
               ),
               const SizedBox(
