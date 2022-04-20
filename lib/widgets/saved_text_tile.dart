@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:intl/intl.dart';
+import 'package:starange_reader/database/texts_database.dart';
 import 'package:starange_reader/models/saved_text_model.dart';
 import 'package:starange_reader/screens/edit_screen.dart';
 
@@ -88,7 +89,17 @@ class _SavedTextTileState extends State<SavedTextTile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton.icon(
+                IconButton(
+                  onPressed: () async {
+                    await replayText();
+                  },
+                  icon: const Icon(
+                    Icons.replay_outlined,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(width: 5,),
+                IconButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -101,16 +112,53 @@ class _SavedTextTileState extends State<SavedTextTile> {
                     Icons.edit_outlined,
                     color: Colors.white,
                   ),
-                  label: const Text(
-                    'изменить',
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
+                // TextButton.icon(
+                //   onPressed: () async {
+                //     await replayText();
+                //   },
+                //   icon: const Icon(
+                //     Icons.replay_outlined,
+                //     color: Colors.white,
+                //   ),
+                //   label: const Text(
+                //     // 'заново',
+                //     '',
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
+                // // const SizedBox(width: 5,),
+                // TextButton.icon(
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => EditScreen(st: widget.st),
+                //       ),
+                //     ).whenComplete(widget.funk);
+                //   },
+                //   icon: const Icon(
+                //     Icons.edit_outlined,
+                //     color: Colors.white,
+                //   ),
+                //   label: const Text(
+                //     // 'изменить',
+                //     '',
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> replayText() async {
+    final updatedtext = widget.st.copy(
+      lastindex: 0,
+    );
+    await TextsDatabase.instance.update(updatedtext);
   }
 }

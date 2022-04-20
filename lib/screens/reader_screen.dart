@@ -66,10 +66,10 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
       lastText += ' ${textlist[counter]}';
       counter++;
       var a = textlist[counter].length;
-      if (a > 7) {
+      if (a > 4) {
         dur = Duration(milliseconds: controller.speedsMap[controller.getSpeed()]!['medium']!);
       }
-      if (a > 15) {
+      if (a > 8) {
         dur = Duration(milliseconds: controller.speedsMap[controller.getSpeed()]!['long']!);
       } else {
         dur = Duration(milliseconds: controller.speedsMap[controller.getSpeed()]!['short']!);
@@ -78,6 +78,9 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
       animcontroller.forward();
       setState(() {});
     }
+    // } else {
+    //   textpauser();
+    // }
   }
 
   void textpauser() {
@@ -165,7 +168,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
               child: Center(
                 child: SizedBox(
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 100),
+                    duration: const Duration(milliseconds: 70),
                     child: Text(
                       textlist[counter],
                       key: ValueKey(textlist[counter] + Random(200).toString()),

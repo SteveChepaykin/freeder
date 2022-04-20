@@ -12,11 +12,13 @@ class EditScreen extends StatefulWidget {
 
 class _EditScreenState extends State<EditScreen> {
   final TextEditingController textedit = TextEditingController();
+  final TextEditingController positionedit = TextEditingController();
   // final TextEditingController headeredit = TextEditingController();
 
   @override
   void initState() {
     textedit.text = widget.st.wholetext;
+    positionedit.text = (widget.st.lastindex + 1).toString();
     // headeredit.text = widget.st.title;
     super.initState();
   }
@@ -30,7 +32,10 @@ class _EditScreenState extends State<EditScreen> {
         actions: [
           TextButton.icon(
             onPressed: () async {
-              await updateText(textedit.text);
+              await updateText(
+                textedit.text,
+                int.parse(positionedit.text) - 1,
+              );
               Navigator.pop(context);
             },
             icon: const Icon(
@@ -58,15 +63,34 @@ class _EditScreenState extends State<EditScreen> {
               maxLines: null,
               style: const TextStyle(fontSize: 17, color: Colors.white),
             ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Text('позиция в тексте:', style: TextStyle(fontSize: 20, color: Colors.white),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: TextField(
+                    controller: positionedit,
+                    maxLines: 1,
+                    style: const TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+                const Text('слово', style: TextStyle(fontSize: 20, color: Colors.white),)
+              ],
+            ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> updateText(String newlasttext) async {
+  Future<void> updateText(String newlasttext, int newlastindex) async {
     final updatedtext = widget.st.copy(
       wholetext: newlasttext,
+      lastindex: newlastindex,
       // title: newheader,
     );
     await TextsDatabase.instance.update(updatedtext);

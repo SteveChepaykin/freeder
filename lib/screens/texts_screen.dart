@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_mobile_vision/flutter_mobile_vision.dart';
 import 'package:starange_reader/database/texts_database.dart';
 import 'package:starange_reader/database/user_prefs.dart';
 import 'package:starange_reader/models/saved_text_model.dart';
@@ -19,10 +20,12 @@ class _TextsScreenState extends State<TextsScreen> {
   ScrollController scrollcont = ScrollController();
   List<SavedText> savedtexts = [];
   bool isLoading = false;
+  // bool isInitialised = false;
 
   @override
   void initState() {
     refreshNotes().whenComplete(() => setState(() {}));
+    // FlutterMobileVision.start().then((value) => isInitialised = true);
     // s();
     super.initState();
   }
@@ -60,6 +63,12 @@ class _TextsScreenState extends State<TextsScreen> {
           //     await refreshNotes();
           //   },
           //   icon: const Icon(Icons.replay),
+          // ),
+          // IconButton(
+          //   onPressed: () {
+          //     startScan();
+          //   },
+          //   icon: const Icon(Icons.add),
           // ),
           IconButton(
             onPressed: () {
@@ -151,4 +160,25 @@ class _TextsScreenState extends State<TextsScreen> {
           ),
         ],
       );
+
+  // Future<String> startScan() async {
+  //   List<OcrText> ocrlist = [];
+  //   String res = '';
+  //   try {
+  //     ocrlist = await FlutterMobileVision.read(
+  //       waitTap: true,
+  //       multiple: true,
+  //       camera: FlutterMobileVision.CAMERA_BACK,
+  //       fps: 15,
+  //     );
+  //     for(OcrText text in ocrlist) {
+  //       res = res + text.value + ' ';
+  //     }
+      
+  //   } on Exception catch (e) {
+  //     print(e);
+  //   }
+  //   print(res);
+  //   return res.isNotEmpty ? res : 'no text found';
+  // }
 }

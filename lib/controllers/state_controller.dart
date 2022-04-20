@@ -31,10 +31,20 @@ class StateController extends GetxController {
       'medium': 300,
       'long': 400,
     },
+    250: {
+      'short': 190,
+      'medium': 240,
+      'long': 340,
+    },
     300: {
       'short': 150,
       'medium': 200,
       'long': 300,
+    },
+    350: {
+      'short': 140,
+      'medium': 170,
+      'long': 270,
     },
     400: {
       'short': 120,

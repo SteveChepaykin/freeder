@@ -78,13 +78,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   butn(100),
                   butn(150),
                   butn(200),
+                  butn(250),
                   butn(300),
+                  butn(350),
                   butn(400),
                 ],
               ),
