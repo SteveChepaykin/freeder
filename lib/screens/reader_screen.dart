@@ -43,6 +43,7 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
       setState(() {
         counter = thissavedtext!.lastindex;
         textlist = thissavedtext!.wholetext.split(' ');
+        textlist.add('//конец//');
         textlist.removeWhere((element) => element == '█');
         lastText = textlist.sublist(0, counter).join(' ');
       });
