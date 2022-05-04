@@ -86,6 +86,7 @@ class _TextsScreenState extends State<TextsScreen> {
               InputCard(
                 func: refreshNotes,
               ),
+              
               const SizedBox(
                 height: 30,
               ),
@@ -118,7 +119,10 @@ class _TextsScreenState extends State<TextsScreen> {
                           onLongPressEnd: (details) async {
                             showDialog(context: context, builder: (constext) => dialog(st));
                           },
-                          child: SavedTextTile(st: st, funk: refreshNotes,),
+                          child: SavedTextTile(
+                            st: st,
+                            funk: refreshNotes,
+                          ),
                         ),
                       )
                       .toList()
@@ -134,7 +138,10 @@ class _TextsScreenState extends State<TextsScreen> {
 
   Widget dialog(SavedText st) => AlertDialog(
         backgroundColor: const Color.fromARGB(255, 17, 35, 49),
-        title: const Text('УДАЛЕНИЕ', style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'УДАЛЕНИЕ',
+          style: TextStyle(color: Colors.white),
+        ),
         content: Text(
           'уверены что хотите удалить текст: ${st.wholetext}',
           maxLines: 5,
@@ -146,8 +153,14 @@ class _TextsScreenState extends State<TextsScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.close_rounded, color: Colors.white,),
-            label: const Text('назад', style: TextStyle(color: Colors.white),),
+            icon: const Icon(
+              Icons.close_rounded,
+              color: Colors.white,
+            ),
+            label: const Text(
+              'назад',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           TextButton.icon(
             onPressed: () async {
@@ -155,8 +168,14 @@ class _TextsScreenState extends State<TextsScreen> {
               await refreshNotes();
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.check_rounded, color: Colors.white,),
-            label: const Text('удалить', style: TextStyle(color: Colors.white),),
+            icon: const Icon(
+              Icons.check_rounded,
+              color: Colors.white,
+            ),
+            label: const Text(
+              'удалить',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       );
@@ -174,7 +193,7 @@ class _TextsScreenState extends State<TextsScreen> {
   //     for(OcrText text in ocrlist) {
   //       res = res + text.value + ' ';
   //     }
-      
+
   //   } on Exception catch (e) {
   //     print(e);
   //   }
