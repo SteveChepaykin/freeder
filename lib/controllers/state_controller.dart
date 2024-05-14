@@ -53,15 +53,7 @@ class StateController extends GetxController {
     },
   };
 
-  // void changeSpeed(int value) {
-  //   if(1 <= (speed += value) && (speed += value) <= 5) speed += value;
-  // }
-
-  // void changeFontSize(int newsize) {
-  //   if(25<newsize && newsize<55) textSize = newsize;
-  // }
-
-   Future<void> setSpeed(int spd) {
+  Future<void> setSpeed(int spd) {
     return prefs.setInt(speedkey, spd);
   }
 
@@ -72,6 +64,7 @@ class StateController extends GetxController {
   int? getSize() {
     return prefs.containsKey(sizekey) ? prefs.getInt(sizekey) : 40;
   }
+
   int? getSpeed() {
     return prefs.containsKey(speedkey) ? prefs.getInt(speedkey) : 200;
   }

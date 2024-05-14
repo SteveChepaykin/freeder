@@ -80,9 +80,6 @@ class _ReaderScreenState extends State<ReaderScreen> with SingleTickerProviderSt
       animcontroller.forward();
       setState(() {});
     }
-    // } else {
-    //   textpauser();
-    // }
   }
 
   void textpauser() {
